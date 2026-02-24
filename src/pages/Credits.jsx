@@ -1,0 +1,60 @@
+import React, { useEffect, useState } from 'react'
+import { dummyPlans } from '../assets/assets'
+import Loading from './Loading'
+
+const Credits = () => {
+  const [plans, setPlans] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    setPlans(dummyPlans)
+    setLoading(false)
+  }, [])
+
+  if (loading) return <Loading />
+
+  return (
+    <div className="w-full max-w-7xl h-screen overflow-y-auto mx-auto px-4 sm:mx-6 lg:px-8 py-12">
+      <h2 className="text-3xl font-semibold text-center mb-10 xl:mt-30 text-gray-800 dark:text-white">
+        Credits Plans
+      </h2>
+      <div className="flex flex-wrap justify-center gap-8">
+        {plans.map((plan) => (
+          <div
+            key={plan._id}
+            className={`relative border border-gray-200 dark:border-purple-700 rounded-lg shadow hover:shadow-lg transition-shadow p-6 min-w-[300px] flex flex-col ${plan._id === "pro"
+                ? "bg-purple-50 dark:bg-purple-900"
+                : "bg-white dark:bg-transparent"
+              }`}
+          >
+            {plan._id === "pro" && (
+              <span className="absolute top-0 right-0 bg-purple-600 text-white text-xs font-semibold px-2 py-1 rounded-bl">
+                Most Popular
+              </span>
+            )}
+            <div className="flex-1">
+              <h3 className='text-xl font-semibold text-gray-900 dark:text-white mb-2'>{plan.name}</h3>
+              <p className='text-2xl font-bold text-purple-600 dark:text-purple-300 mb-4'>
+                ${plan.price} <span className='text-base font-normal text-gray-600 dark:text-purple-200'> / {plan.credits} Credits</span>
+              </p>
+
+              <ul className='list-disc list-inside text-sm text-gray-700 dark:text-purple-200 space-y-1'>
+                {plan.features.map((feature, index) => (
+                  <li key={index}>{feature}</li>
+                ))}
+              </ul>
+            </div>
+            <button
+              aria-label={`Buy ${plan.name} plan`}
+              className='mt-6 bg-purple-600 hover:bg-purple-700 active:bg-purple-800 text-white font-medium py-2 rounded transition-colors cursor-pointer'
+            >
+              Buy Now
+            </button>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+export default Credits
